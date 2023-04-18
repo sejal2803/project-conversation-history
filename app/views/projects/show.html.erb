@@ -1,0 +1,37 @@
+<!-- app/views/projects/show.html.erb -->
+
+<div class="container">
+  <h1><%= @project.title %></h1>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <% if @project.status.present? %>
+        <p>Status: <%= @project.status.titleize %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <h2>Comments</h2>
+
+  <% @project.comments.each do |comment| %>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p class="card-text"><%= comment.body %></p>
+        <p>Created at: <%= comment.created_at.strftime("%m/%d/%Y %I:%M %p") %></p>
+      </div>
+    </div>
+  <% end %>
+
+  <%= form_with model: [@project, Comment.new], local: true do |form| %>
+    <div class="form-group">
+      <%= form.label :body, "New comment" %>
+      <%= form.text_area :body, rows: 4, class: "form-control" %>
+    </div>
+
+    <%= form.submit "Add Comment", class: "btn btn-primary" %>
+  <% end %>
+
+  <%= link_to "Back", projects_path, class: "btn btn-secondary" %>
+  <%= link_to "update_status", edit_project_path(@project), class: "btn btn-secondary mr-2" %>
+
+</div>
